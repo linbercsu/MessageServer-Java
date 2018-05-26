@@ -1,0 +1,27 @@
+apply plugin: 'java-library'
+
+dependencies {
+//    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.corundumstudio.socketio:netty-socketio:1.7.12'
+    compile 'org.slf4j:slf4j-simple:1.7.12'
+    compile 'com.google.code.gson:gson:2.8.2'
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': '1.0',
+                'Main-Class': 'com.mx.lib.Launcher'
+    }
+    baseName = project.name + '-all'
+    from {
+        configurations.compile.collect {
+            System.out.println('-----------------------' + it)
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    with jar
+}
